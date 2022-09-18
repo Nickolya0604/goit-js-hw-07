@@ -27,27 +27,26 @@ function createPhotoMarkup() {
 }
 
 function gellaryImgClick(e) {
-  window.addEventListener("keydown", onEscTap);
   e.preventDefault();
   if (e.target.nodeName !== "IMG") {
     return;
   }
   const modal = basicLightbox.create(
-    `<img  src="${e.target.dataset.source}" width="1300" height="800">`
-  );
-  modal.show();
-
-  function onEscTap(ev) {
-    if (ev.code !== "Escape") {
-      return;
+    `<img  src="${e.target.dataset.source}" width="1300" height="800">`,
+    {
+      onShow: (modal) => {
+        document.addEventListener("keydown", closeKeyDownKeyEsc);
+      },
+      onClose: (modal) => {
+        document.removeEventListener("keydown", closeKeyDownKeyEsc);
+      },
     }
-    window.removeEventListener("keydown", onEscTap);
-    modal.close();
-  }
+  );
 
-  // document.addEventListener("keydown", (e) => {
-  //   if (e.code === "Escape") {
-  //     modal.close();
-  //   }
-  // });
+  function closeKeyDownKeyEsc(ev) {
+    if (ev.code === "Escape") {
+      modal.close();
+    }
+  }
+  modal.show();
 }
