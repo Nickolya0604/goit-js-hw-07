@@ -27,6 +27,7 @@ function createPhotoMarkup() {
 }
 
 function gellaryImgClick(e) {
+  window.addEventListener("keydown", onEscTap);
   e.preventDefault();
   if (e.target.nodeName !== "IMG") {
     return;
@@ -36,9 +37,17 @@ function gellaryImgClick(e) {
   );
   modal.show();
 
-  document.addEventListener("keydown", (e) => {
-    if (e.code === "Escape") {
-      modal.close();
+  function onEscTap(ev) {
+    if (ev.code !== "Escape") {
+      return;
     }
-  });
+    window.removeEventListener("keydown", onEscTap);
+    modal.close();
+  }
+
+  // document.addEventListener("keydown", (e) => {
+  //   if (e.code === "Escape") {
+  //     modal.close();
+  //   }
+  // });
 }
